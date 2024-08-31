@@ -12,6 +12,7 @@ const createTransactions = asyncHandler(async (req, res) => {
     const todayDate = new Date();
     const newReleve = new Transactions({
       id_client,
+      nom,prenom,
       amount,
       transfertType,
       transfertState,

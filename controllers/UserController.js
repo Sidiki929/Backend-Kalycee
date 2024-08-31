@@ -10,7 +10,7 @@ const createUser = asyncHandler(async (req, res) => {
     try {
         const { username, nom, prenom,telephone, password, userType  } = req.body;
         // Vérifier si le Pseudo existe déjà dans la base de données
-        const existingUser = await User.findOne({ username:  username  });
+        const existingUser = await User.findOne({ telephone:  telephone  });
         if (existingUser) {
           // Si le Pseudo existe déjà, renvoyer un message d'erreur
           return res.status(400).json({ error: "Le Pseudo existe déjà." });
@@ -24,7 +24,7 @@ const createUser = asyncHandler(async (req, res) => {
         const year = todayDate1.getFullYear();
 
         await User.create({
-          username,nom,prenom,
+          nom,prenom,
           password: hashedPassword,
           telephone:telephone,
           userType:userType,

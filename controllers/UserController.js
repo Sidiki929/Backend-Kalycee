@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 
 const createUser = asyncHandler(async (req, res) => {
     try {
-        const { username, nom, prenom,telephone, password, userType  } = req.body;
+        const {  nom, prenom,telephone, password, userType  } = req.body;
         // Vérifier si le Pseudo existe déjà dans la base de données
         const existingUser = await User.findOne({ telephone:  telephone  });
         if (existingUser) {
@@ -102,7 +102,7 @@ const updateUserInfo = asyncHandler(async (req, res) => {
   //  updateUser.password = password;
 
     // Mettre à jour les autres informations de l'utilisateur
-    updateUser.username = username;
+ 
     updateUser.nom = nom;
     updateUser.prenom = prenom;
     if(userType !== "admin"){
@@ -122,7 +122,7 @@ const updateUserInfo = asyncHandler(async (req, res) => {
 
     const updateUser = asyncHandler(async (req, res) => {
         const id2 = req.params.id;
-        const { username, nom, prenom, userType } = req.body;
+        const { telephone, nom, prenom, userType } = req.body;
       
         try {
           const updateUser = await User.findById(id2)
@@ -132,7 +132,7 @@ const updateUserInfo = asyncHandler(async (req, res) => {
           }
       
           await User.findByIdAndUpdate(id2, {
-            username: username,
+            telephone: telephone,
             nom: nom,
             prenom: prenom,
             userType: userType
@@ -198,9 +198,9 @@ router.put('/changePassword/:id', async (req, res) => {
 
 
     const loginUser = asyncHandler(async(req,res) => {
-        const { username, password } =  req.body;
+        const { telephone, password } =  req.body;
         //CHECK IF USER EXSISTS OR NOT
-        const findUser = await User.findOne({ username });
+        const findUser = await User.findOne({ telephone });
 
         if(findUser && (  await bcrypt.compare(password.toString(), findUser.password)) ){
             const refreshToken = await generateRefreshToken(findUser?._id,);
@@ -219,7 +219,7 @@ router.put('/changePassword/:id', async (req, res) => {
                 _id: findUser?._id,
                 prenom: findUser?.prenom,
                 nom : findUser?.nom ,
-                username: findUser?.username,
+                
                 userType:findUser?.userType,
                 
                 date_ajout:findUser?.date_ajout,
